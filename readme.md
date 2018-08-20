@@ -6,6 +6,9 @@ Usage:
 
         >>./akhyls.py -R <PORT>                 (reverse shell)(own computer)
         >>./backdoor.py --c <IP> <PORT>         (connect mode)(vulnerable machines for penetration testing)
+         <img src="https://preview.ibb.co/kT9JLz/1.png">
+         <img src="https://preview.ibb.co/hjc50z/2.png">
+
         
         OR              OR              OR
         
