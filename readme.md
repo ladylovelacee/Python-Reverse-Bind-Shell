@@ -16,3 +16,5 @@ Usage:
         >>./akhyls.py -B <IP> <PORT>            (bind shell)(own computer)
 
         
+<img src="https://preview.ibb.co/b3ffYK/Screen_Shot_08_20_18_at_04_52_PM_001.png">
+<img src="https://image.ibb.co/hiwLYK/Screen_Shot_08_20_18_at_04_52_PM.png">
