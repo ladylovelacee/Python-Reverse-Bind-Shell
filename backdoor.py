@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import socket
 import sys
 import subprocess
