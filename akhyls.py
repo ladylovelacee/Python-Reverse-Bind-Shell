@@ -34,10 +34,11 @@ def reverse(port):
                 command=input((b[0]+'@'+str(hostname.strip())+":"))
                 if "exit" in command:
                     a.send(str.encode("exit"))
+                    print('[*] SESSION Closed...')
                     a.close()
                     sys.exit(1)
                 elif "shell_check".lower() in command:
-                    print('[*]Interactıve shell checked...')
+                    print('[*] Interactıve shell checked...')
                     a.send(str.encode(tty+'\n'))
                     print(a.recv(1024).decode('utf-8'))
                 else:
