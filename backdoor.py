@@ -12,7 +12,7 @@ print("""
 ██████╔╝██║     ╚██████╔╝        ██║   ███████╗   ██║   
 ╚═════╝ ╚═╝      ╚═════╝         ╚═╝   ╚══════╝   ╚═╝   
 Usage ./backdoor.py --l <PORT>
-Usage ./backdoor.py --v <Ip> <PORT>
+Usage ./backdoor.py --c <Ip> <PORT>
                                                         """)
 
 
@@ -103,7 +103,7 @@ if __name__=='__main__':
     if len(sys.argv) < 3:
         print("[-] Missing Parameter")
         print('Usage ./backdoor.py --l <PORT>')
-        print('Usage ./backdoor.py --v <Ip> <PORT>')
+        print('Usage ./backdoor.py --c <Ip> <PORT>')
     elif ("--l" in sys.argv[1]):
         bndcnnct(sys.argv[2])
     elif("--c" in sys.argv[1]):
