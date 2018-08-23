@@ -1,4 +1,6 @@
 Python Reverse-Bind Shell
+<h1>Windows support not yet<h1>
+
 Usage:
         >>chmod +x akhyls.py
         
