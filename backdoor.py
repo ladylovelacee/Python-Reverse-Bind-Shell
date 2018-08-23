@@ -96,11 +96,13 @@ def bndcnnct(port):
                 ioerror=str.encode("[-] Directory Not Found")
                 a.send(ioerror)
                 pass
-            
     except Exception as f:
         print(f)
     
-    
+    except KeyboardInterrupt:
+        print("[-] The connection was forcibly closed")
+        rvrscnct.close()
+        sys.exit(1)
 
 if __name__=='__main__':
     if len(sys.argv) < 3:
