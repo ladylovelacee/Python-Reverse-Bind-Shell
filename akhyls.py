@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 import sys
 import socket
 import os
@@ -27,7 +29,7 @@ def reverse(port):
         print(a.recv(1024).decode('utf-8'))
         print('[!] Interactive shell to check >> use command shell_check')
         print('[!] Interactive shell to switch >> use command interactive_shell')
-        a.settimeout(3)
+        a.settimeout(1.5)
         host=str.encode('id -u -n')
         a.send(host)
         hostname=a.recv(1024).decode('utf-8')
@@ -69,16 +71,22 @@ def reverse(port):
                 a.close()
                 sys.exit(1)
     except KeyboardInterrupt:
-        print("[-] Connection closed")
-        a.close()
+        print("[-] The connection was forcibly closed")
+        try:
+            a.close()
+        except UnboundLocalError:pass
         sys.exit(1)
-        
+    except ConnectionRefusedError:
+        print("[-] Connection error")
+    except Exception as f:
+        print(f.message)
+    
 def bind(ip,port) :
     try:
         print("[?] Waiting For Connection...")
         bindshell=socket.socket()
         bindshell.connect(((ip,int(port))))
-        bindshell.settimeout(2)
+        bindshell.settimeout(1.5)
         print(bindshell.recv(1024).decode('utf-8'))
         print('[!] Interactive shell to check >> use command shell_check')
         print('[!] Interactive shell to switch >> use command interactive_shell')
@@ -126,13 +134,15 @@ def bind(ip,port) :
                 bindshell.close()
                 sys.exit(1)
     except KeyboardInterrupt:
-        print("[-] Connection closed")
-        bindshell.close()
+        print("[-] The connection was forcibly closed")
+        try:
+            bindshell.close()
+        except UnboundLocalError:pass
         sys.exit(1)
-            
-                          
+    except ConnectionRefusedError:
+        print("[-] Connection error")
     except Exception as f:
-        print(f)
+        print(f.message)
     
 if __name__=='__main__':
     if len(sys.argv) < 3:
